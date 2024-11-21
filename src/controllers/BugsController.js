@@ -75,8 +75,14 @@ export class BugsController extends BaseController {
         }
     }
 
-    getNotesByBugId(arg0, getNotesByBugId) {
-        throw new Error("Method not implemented.");
+    async getNotesByBugId(request, response, next) {
+        try {
+            const bugId = request.params.bugId
+            const notes = await bugsService.getNotesByBugId(bugId)
+            response.send(notes)
+        } catch (error) {
+            next(error)
+        }
     }
 
 }

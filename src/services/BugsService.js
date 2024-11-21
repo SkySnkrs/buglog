@@ -1,7 +1,9 @@
 import { dbContext } from "../db/DbContext"
 import { Forbidden } from "../utils/Errors"
+import { notesService } from "./NotesService"
 
 class BugsService {
+
 
     async postBugs(bugsData) {
         const bugs = await dbContext.Bugs.create(bugsData)
@@ -44,6 +46,14 @@ class BugsService {
         await bugToChange.deleteOne()
         return bugToChange
     }
+
+    async getNotesByBugId(bugId) {
+        const notes = dbContext.Notes.find()
+        if (!notes) throw new Error(`No Notes By This ID ${bugId}`)
+
+        return notes
+    }
+
 }
 
 export const bugsService = new BugsService()
