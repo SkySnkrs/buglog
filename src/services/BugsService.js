@@ -4,7 +4,6 @@ import { notesService } from "./NotesService"
 
 class BugsService {
 
-
     async postBugs(bugsData) {
         const bugs = await dbContext.Bugs.create(bugsData)
         await bugs.populate('creator')
@@ -54,6 +53,14 @@ class BugsService {
 
         return notes;
     }
+
+    async getTrackedBugsById(bugId) {
+        const trackedBugs = await dbContext.TrackedBugs.find({ bugId }).populate('tracker bug')
+        if (!trackedBugs) throw new Error(`No TrackedBugs By This ID ${bugId}`)
+
+        return trackedBugs
+    }
+
 
 }
 
