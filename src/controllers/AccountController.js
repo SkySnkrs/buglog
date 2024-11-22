@@ -9,6 +9,7 @@ export class AccountController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getUserAccount)
       .put('', this.editUserAccount)
+      .get('/trackedbugs', this.getAccountTrackedBugs)
   }
 
   async getUserAccount(req, res, next) {
@@ -20,7 +21,7 @@ export class AccountController extends BaseController {
     }
   }
 
-   async editUserAccount(req, res, next) {
+  async editUserAccount(req, res, next) {
     try {
       const accountId = req.userInfo.id
       req.body.id = accountId
@@ -30,5 +31,15 @@ export class AccountController extends BaseController {
       next(error)
     }
   }
-  
+
+  async getAccountTrackedBugs(request, response, next) {
+    try {
+      const UserId = request.userInfo.id
+      const accountTrackedBugs = await accountService.getAccountTrackedBugs(UserId)
+      response.send(accountTrackedBugs)
+    } catch (error) {
+      next(error)
+    }
+  }
+
 }

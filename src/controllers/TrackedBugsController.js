@@ -8,6 +8,7 @@ export class TrackedBugsController extends BaseController {
         this.router
             .use(Auth0Provider.getAuthorizedUserInfo)
             .post('', this.postTrackedBugs)
+            .delete('/:trackedBugId', this.deleteTrackedBugs)
     }
 
     async postTrackedBugs(request, response, next) {
@@ -17,6 +18,18 @@ export class TrackedBugsController extends BaseController {
 
             bugsData.creatorId = userInfo.id
             const trackedBugs = await trackedBugsService.postTrackedBugs(bugsData)
+            response.send(trackedBugs)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async deleteTrackedBugs(request, response, next) {
+        try {
+            const trackedBugId = request.params.trackedBugId
+            const userInfo = request.userInfo.id
+
+            const trackedBugs = await trackedBugsService.deleteTrackedBugs(trackedBugId, userInfo)
             response.send(trackedBugs)
         } catch (error) {
             next(error)

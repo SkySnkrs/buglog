@@ -10,7 +10,7 @@ import { dbContext } from '../db/DbContext'
 async function createAccountIfNeeded(account, user) {
   if (!account) {
     user._id = user.id
-    if(typeof user.name == 'string' && user.name.includes('@')){
+    if (typeof user.name == 'string' && user.name.includes('@')) {
       user.name = user.nickname
     }
     account = await dbContext.Account.create({
@@ -46,6 +46,13 @@ function sanitizeBody(body) {
 }
 
 class AccountService {
+
+
+  async getAccountTrackedBugs(UserId) {
+    const trackedBugs = await dbContext.TrackedBugs.find({ accountId: UserId }).populate('tracker bug')
+    if (!trackedBugs) throw new Error(`No Bugs By This ID ${UserId}`)
+    return trackedBugs
+  }
   /**
    * Returns a user account from the Auth0 user object
    *

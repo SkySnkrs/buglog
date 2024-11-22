@@ -41,7 +41,7 @@ class BugsService {
     async deleteBugsById(bugId, creatorId) {
         const bugToChange = await dbContext.Bugs.findById(bugId)
 
-        if (creatorId != bugToChange.creatorId) throw new Forbidden("Can't update that, it doesn't belong to you!")
+        if (creatorId != bugToChange.creatorId) throw new Forbidden("Can't delete that, it doesn't belong to you!")
         await bugToChange.deleteOne()
         return bugToChange
     }
