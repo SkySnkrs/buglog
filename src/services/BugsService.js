@@ -48,10 +48,11 @@ class BugsService {
     }
 
     async getNotesByBugId(bugId) {
-        const notes = dbContext.Notes.find()
-        if (!notes) throw new Error(`No Notes By This ID ${bugId}`)
+        const notes = await dbContext.Notes.find({ bugId });
+        if (!notes) throw new Error(`No Bugs By This ID ${bugId}`)
 
-        return notes
+
+        return notes;
     }
 
 }
